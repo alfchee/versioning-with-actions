@@ -12,6 +12,8 @@ jobs:
       - name: Version Composition
         id: composer
         uses: juliansangillo/version-composer@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         with:
           revision-pattern: M.m.b
           preferred-type: build
@@ -21,8 +23,10 @@ jobs:
           test-tag: TEST
           dev-tag: UNSTABLE
 
-      - name: Version Orchestration
+      - name: Changelog update
         uses: juliansangillo/version-maestro@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         with:
           version: ${{ steps.composer.outputs.raw-version }}
           revision-pattern: M.m.b
