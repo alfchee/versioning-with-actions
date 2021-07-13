@@ -1,0 +1,50 @@
+name: Tag for Release Creation
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  tag:
+    name: Application Tagging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Version Composition
+        id: composer
+        uses: juliansangillo/version-composer@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        with:
+          revision-pattern: M.m.b
+          preferred-type: build
+          stable-branch: main
+          test-branch: false
+          dev-branch: dev
+          test-tag: TEST
+          dev-tag: UNSTABLE
+
+      - name: Changelog update
+        uses: juliansangillo/version-maestro@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        with:
+          version: ${{ steps.composer.outputs.raw-version }}
+          revision-pattern: M.m.b
+          preferred-type: build
+
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.composer.outputs.version }}
+          release_name: Release ${{ steps.composer.outputs.raw-version }}
+          draft: false
+          prerelease: ${{ steps.composer.outputs.is-prerelease == 'true' }}
+    outputs:
+      version: ${{ steps.composer.outputs.version }}
