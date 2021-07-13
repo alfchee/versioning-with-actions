@@ -1,5 +1,9 @@
 name: Tag for Release Creation
-on: push
+on:
+  push:
+    branches:
+      - main
+      - dev
 
 jobs:
   tag:
