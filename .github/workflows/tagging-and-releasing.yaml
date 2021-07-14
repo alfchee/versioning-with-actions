@@ -15,19 +15,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Version Composition
-        id: composer
-        uses: juliansangillo/version-composer@v1.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name:  'Automated Github Action Version Bump'
+        id: version_bump
+        uses:  'rimonhanna/gh-action-bump-version@master'
         with:
-          revision-pattern: M.m.b
-          preferred-type: build
-          stable-branch: main
-          test-branch: test
-          dev-branch: dev
-          test-tag: TEST
-          dev-tag: UNSTABLE
+          tag-prefix:  'v'
+
+      # - name: Version Composition
+      #   id: composer
+      #   uses: juliansangillo/version-composer@v1.1
+      #   env:
+      #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      #   with:
+      #     revision-pattern: M.m.b
+      #     preferred-type: build
+      #     stable-branch: main
+      #     test-branch: test
+      #     dev-branch: dev
+      #     test-tag: TEST
+      #     dev-tag: UNSTABLE
 
       # - name: Changelog update
       #   uses: juliansangillo/version-maestro@v1.1
@@ -44,9 +50,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.composer.outputs.version }}
-          release_name: Release ${{ steps.composer.outputs.version }}
+          tag_name: v${{ steps.version_bump.outputs.TAG }}
+          release_name: Release ${{ steps.version_bump.outputs.TAG }}
           draft: false
-          prerelease: ${{ steps.composer.outputs.is-prerelease == 'true' }}
+          prerelease: ${{ contains(${GITHUB_REF##*/}, 'main') }}
     outputs:
       version: ${{ steps.composer.outputs.version }}
