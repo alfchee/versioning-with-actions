@@ -1,8 +1,10 @@
 name: Testing build Unstable versions
 on:
   push:
+    branches:
+      - "!*"
     tags:
-      - '*'
+      - "v*"
 
 jobs:
   build:
