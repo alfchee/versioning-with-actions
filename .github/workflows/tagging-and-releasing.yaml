@@ -2,7 +2,6 @@ name: Tag for Release Creation
 on:
   push:
     branches:
-      - main
       - dev
 
 jobs:
