@@ -14,15 +14,14 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
 
-      # install auto-changelog
-      - name: Install auto-changelog
-        run: |-
-          npm install -g auto-changelog
+      # install dependencies
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
 
       # generate the changelog file
       - name: Create/Update the file
         run: |-
-          auto-changelog
+          npm run changelog
 
       # push the changes
       - uses: EndBug/add-and-commit@v7
