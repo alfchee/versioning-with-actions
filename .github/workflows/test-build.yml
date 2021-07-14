@@ -1,13 +1,14 @@
-name: Testing build
+name: Testing build Unstable versions
 on:
   push:
     tags:
-      - '*.UNSTABLE'   
+      - v*
 
 jobs:
   build:
     name: Build the app
     runs-on: ubuntu-latest
+    if: ${{ contains(github.ref, 'UNSTABLE') }}
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
