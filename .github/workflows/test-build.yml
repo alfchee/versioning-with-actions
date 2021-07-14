@@ -1,6 +1,9 @@
 name: Testing build Unstable versions
 on:
   create:
+  push:
+    tags:
+      - v*
 
 jobs:
   build:
