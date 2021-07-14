@@ -2,7 +2,7 @@ name: Testing build Unstable versions
 on:
   push:
     tags:
-      - v*
+      - '*'
 
 jobs:
   build:
