@@ -53,6 +53,6 @@ jobs:
           tag_name: v${{ steps.version_bump.outputs.TAG }}
           release_name: Release ${{ steps.version_bump.outputs.TAG }}
           draft: false
-          prerelease: ${{ contains(${GITHUB_REF##*/}, 'main') }}
+          prerelease: ${{ contains($GITHUB_REF, 'main') }}
     outputs:
       version: ${{ steps.composer.outputs.version }}
