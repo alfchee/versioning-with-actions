@@ -33,14 +33,14 @@ jobs:
       #     test-tag: TEST
       #     dev-tag: UNSTABLE
 
-      # - name: Changelog update
-      #   uses: juliansangillo/version-maestro@v1.1
-      #   env:
-      #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-      #   with:
-      #     version: ${{ steps.composer.outputs.raw-version }}
-      #     revision-pattern: M.m.b
-      #     preferred-type: build
+      - name: Changelog update
+        uses: juliansangillo/version-maestro@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        with:
+          version: ${{ steps.version_bump.outputs.TAG }}
+          revision-pattern: M.m.b
+          preferred-type: build
 
       - name: Create Release
         id: release
@@ -51,6 +51,6 @@ jobs:
           tag_name: ${{ steps.version_bump.outputs.TAG }}
           release_name: Release ${{ steps.version_bump.outputs.TAG }}
           draft: false
-          prerelease: ${{ contains(github.ref, 'main') }}
+          prerelease: ${{ !contains(github.ref, 'main') }}
     outputs:
       version: ${{ steps.composer.outputs.version }}
