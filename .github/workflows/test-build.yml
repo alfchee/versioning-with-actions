@@ -1,0 +1,25 @@
+name: Testing build
+on:
+  push:
+    tags:
+      - '*.UNSTABLE'   
+
+jobs:
+  build:
+    name: Build the app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Get the version
+        id: get_version
+        run: |-
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Building using tag version
+        run: |-
+          echo "Building the app..."
+          echo "Docker image creation using the version: ${{ steps.get_version.outputs.VERSION }}"
