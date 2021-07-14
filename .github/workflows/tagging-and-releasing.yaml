@@ -32,10 +32,31 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.VERSION }}${{ steps.version.outputs.TAG }}
+          tag_name: ${{ steps.version.outputs.VERSION }}
           release_name: Release ${{ steps.version.outputs.VERSION }}${{ steps.version.outputs.TAG }}
           draft: false
           prerelease: ${{ !contains(github.ref, 'main') }}
           body_path: ./CHANGELOG.md
     outputs:
-      version: ${{ steps.composer.outputs.version }}
+      version: ${{ steps.version.outputs.VERSION }}${{ steps.version.outputs.TAG }}
+
+  build:
+    name: Build the app
+    runs-on: ubuntu-latest
+    needs: tag
+    if: ${{ contains(needs.tag.outputs.version), 'UNSTABLE') }}
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Get the version
+        id: get_version
+        run: |-
+          echo ::set-output name=VERSION::${{ needs.tag.outputs.version }}
+
+      - name: Building using tag version
+        run: |-
+          echo "Building the app..."
+          echo "Docker image creation using the version: ${{ steps.get_version.outputs.VERSION }}"
