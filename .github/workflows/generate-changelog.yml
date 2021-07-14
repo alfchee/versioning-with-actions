@@ -1,0 +1,26 @@
+name: Generate Changelog
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+      - dev
+
+jobs:
+  changelog:
+    name: Changelog Generation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      # generate the changelog file
+      - name: Create/Update the file
+        run: |-
+          npm run changelog
+
+      # push the changes
+      - uses: EndBug/add-and-commit@v7
+        with:
+          message: 'docs(changelog): updating the changelog'
+          push: true
