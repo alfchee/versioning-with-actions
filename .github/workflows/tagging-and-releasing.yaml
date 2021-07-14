@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Version Composition
         id: composer
@@ -22,19 +24,19 @@ jobs:
           revision-pattern: M.m.b
           preferred-type: build
           stable-branch: main
-          test-branch: false
+          test-branch: test
           dev-branch: dev
           test-tag: TEST
           dev-tag: UNSTABLE
 
-      - name: Changelog update
-        uses: juliansangillo/version-maestro@v1.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-        with:
-          version: ${{ steps.composer.outputs.raw-version }}
-          revision-pattern: M.m.b
-          preferred-type: build
+      # - name: Changelog update
+      #   uses: juliansangillo/version-maestro@v1.1
+      #   env:
+      #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      #   with:
+      #     version: ${{ steps.composer.outputs.raw-version }}
+      #     revision-pattern: M.m.b
+      #     preferred-type: build
 
       - name: Create Release
         id: release
@@ -43,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.composer.outputs.version }}
-          release_name: Release ${{ steps.composer.outputs.raw-version }}
+          release_name: Release ${{ steps.composer.outputs.version }}
           draft: false
           prerelease: ${{ steps.composer.outputs.is-prerelease == 'true' }}
     outputs:
