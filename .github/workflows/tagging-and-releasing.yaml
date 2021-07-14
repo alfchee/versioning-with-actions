@@ -39,14 +39,14 @@ jobs:
       #     test-tag: TEST
       #     dev-tag: UNSTABLE
 
-      - name: Changelog update
-        uses: juliansangillo/version-maestro@v1.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-        with:
-          version: ${{ steps.version.outputs.RAW_VERSION }}
-          revision-pattern: M.m.b
-          preferred-type: build
+      # - name: Changelog update
+      #   uses: juliansangillo/version-maestro@v1.1
+      #   env:
+      #     ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      #   with:
+      #     version: ${{ steps.version.outputs.RAW_VERSION }}
+      #     revision-pattern: M.m.b
+      #     preferred-type: build
 
       - name: Create Release
         id: release
@@ -54,9 +54,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version_bump.outputs.TAG }}
-          release_name: Release ${{ steps.version_bump.outputs.TAG }}
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          release_name: Release ${{ steps.version.outputs.VERSION }}
           draft: false
           prerelease: ${{ !contains(github.ref, 'main') }}
+          body_path: ./CHANGELOG.md
     outputs:
       version: ${{ steps.composer.outputs.version }}

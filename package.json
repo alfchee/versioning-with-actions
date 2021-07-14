@@ -16,7 +16,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "commit": "git add . && commit"
+    "commit": "git add . && commit",
+    "changelog": "auto-changelog -p"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +41,7 @@
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@commitlint/prompt-cli": "^12.1.4",
+    "auto-changelog": "^2.3.0",
     "husky": "^7.0.1"
   }
 }
