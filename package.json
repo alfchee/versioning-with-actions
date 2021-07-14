@@ -17,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "commit": "git add . && commit",
-    "changelog": "auto-changelog"
+    "changelog": "auto-changelog -p"
   },
   "eslintConfig": {
     "extends": [
