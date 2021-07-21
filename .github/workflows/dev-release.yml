@@ -1,0 +1,35 @@
+name: Build dev 
+on:
+  push:
+    branches:
+      - dev
+    tags:
+      - v*
+    
+
+jobs:
+  build:
+    name: Build the app
+    runs-on: ubuntu-latest
+    if: ${{ contains(needs.tag.outputs.version, 'dev') }}
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get package version
+        id: package-version
+        uses: koj-co/package-version-action@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get the version
+        id: get_version
+        run: |-
+          echo ::set-output name=VERSION::${{ steps.package-version.outputs.package-version }}
+
+      - name: Building using tag version
+        run: |-
+          echo "Building the app..."
+          echo "Docker image creation using the version: ${{ steps.get_version.outputs.VERSION }}"
