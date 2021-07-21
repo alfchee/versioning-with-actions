@@ -34,4 +34,4 @@ jobs:
       - name: Change version
         run: |-
           npm version ${{ steps.version-calc.outputs.next_version }} --git-tag-version=true
-          git push gh-origin --tags
+          git push gh-origin ${{ steps.version-calc.outputs.next_version }}
