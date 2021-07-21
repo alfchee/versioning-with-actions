@@ -1,9 +1,8 @@
 name: Generate Changelog
 on:
-  pull_request:
-    types: [opened, synchronize]
+  push:
     branches:
-      - dev
+      - main
 
 jobs:
   changelog:
@@ -15,17 +14,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      # install dependencies
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Get package version
+        id: package-version
+        uses: koj-co/package-version-action@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # generate the changelog file
-      - name: Create/Update the file
-        run: |-
-          npm run changelog
+      # generate the changelog from last to current version detected
+      - name: Generate Changelog
+        id: changelog
+        uses: scottbrenner/generate-changelog-action@master
 
-      # push the changes
-      - uses: EndBug/add-and-commit@v7
+      # Create a Release with the changelog
+      - name: Create Release
+        id: release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          message: 'docs(changelog): updating the changelog'
-          push: true
+          tag_name: ${{ steps.package-version.outputs.package-version }}
+          release_name: Release ${{ steps.package-version.outputs.package-version }}
+          draft: false
+          prerelease: false
+          body: |
+            ${{ steps.changelog.outputs.changelog }}
