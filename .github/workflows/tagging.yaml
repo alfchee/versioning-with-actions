@@ -38,7 +38,6 @@ jobs:
           version: ${{ steps.version-calc.outputs.next_version }}
           git-tag-version: 'true'
 
-      # - name: Change version
-      #   run: |-
-      #     npm version ${{ steps.version-calc.outputs.next_version }} --git-tag-version=true
-      #     git push gh-origin ${{ steps.version-calc.outputs.next_version }}
+      - name: Push version
+        run: |-
+          git push gh-origin ${{ steps.version-calc.outputs.next_version }}
