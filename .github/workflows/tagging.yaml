@@ -40,4 +40,4 @@ jobs:
         run: |-
           git commit -a -m "ci(version): level up version"
           git tag ${{ steps.version-calc.outputs.next_version }}
-          git push ${{ steps.version-calc.outputs.next_version }}
+          git push origin ${{ steps.version-calc.outputs.next_version }}
