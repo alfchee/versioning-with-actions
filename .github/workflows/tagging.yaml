@@ -38,6 +38,6 @@ jobs:
 
       - name: Push version
         run: |-
-          git commit -m "ci(version): level up version"
+          git commit -a -m "ci(version): level up version"
           git tag ${{ steps.version-calc.outputs.next_version }}
           git push ${{ steps.version-calc.outputs.next_version }}
