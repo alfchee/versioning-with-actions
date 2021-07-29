@@ -25,13 +25,19 @@ jobs:
           dry_run: true
           default_bump_level: patch
 
-      - name: Cofiguring Git
-        run: |-
-          git config user.name $GITHUB_ACTOR
-          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
-          git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-
       - name: Change version
-        run: |-
-          npm version ${{ steps.version-calc.outputs.next_version }} --git-tag-version=true
-          git push gh-origin ${{ steps.version-calc.outputs.next_version }}
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: ${{ steps.version-calc.outputs.next_version }}
+          git-tag-version: 'true'
+
+      # - name: Cofiguring Git
+      #   run: |-
+      #     git config user.name $GITHUB_ACTOR
+      #     git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+      #     git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+
+      # - name: Change version
+      #   run: |-
+      #     npm version ${{ steps.version-calc.outputs.next_version }} --git-tag-version=true
+      #     git push gh-origin ${{ steps.version-calc.outputs.next_version }}
