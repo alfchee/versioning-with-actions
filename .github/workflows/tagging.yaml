@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
 
       - name: Cofiguring Git
         run: |-
@@ -26,9 +24,6 @@ jobs:
         if: github.event.pull_request.merged
         id: version-calc
         uses: haya14busa/action-bumpr@v1
-        with:
-          dry_run: true
-          default_bump_level: patch
 
       - name: Change version
         uses: reedyuk/npm-version@1.1.1
@@ -39,5 +34,5 @@ jobs:
       - name: Push version
         run: |-
           git commit -a -m "ci(version): level up version"
-          git tag ${{ steps.version-calc.outputs.next_version }}
+          git tag -f ${{ steps.version-calc.outputs.next_version }}
           git push origin ${{ steps.version-calc.outputs.next_version }}
