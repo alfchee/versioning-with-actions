@@ -4,6 +4,7 @@ Testing GitHub Actions to create tags and releases of the application
 
 - Adding some change to test bump to v0.4.5
 - Merging with origin/dev and test again if bump to v0.4.5
+- Creating new branch feature to test bumpo to v0.4.5
 
 ## Getting Started with Create React App
 
