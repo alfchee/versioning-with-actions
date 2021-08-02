@@ -2,6 +2,8 @@
 
 Testing GitHub Actions to create tags and releases of the application
 
+- Adding some change to test bump to v0.4.5
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
